@@ -5,7 +5,7 @@
 # Copyright 2013      Lior Ramati (firerogue517@gmail.com)
 # Copyright © 2014 Elad Alfassa <elad@fedoraproject.org>
 # Licensed under the Eiffel Forum License 2.
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 import re
 from contextlib import closing

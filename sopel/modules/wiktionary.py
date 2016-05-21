@@ -6,7 +6,7 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat
 """
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 import re
 from sopel import web
@@ -70,7 +70,7 @@ def format(result, definitions, number=2):
     for part in parts:
         if part in definitions:
             defs = definitions[part][:number]
-            result += u' — {}: '.format(part)
+            result += ' — {}: '.format(part)
             n = ['%s. %s' % (i + 1, e.strip(' .')) for i, e in enumerate(defs)]
             result += ', '.join(n)
     return result.strip(' .,')

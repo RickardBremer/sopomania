@@ -17,7 +17,7 @@ object is initialized.
 # Copyright © 2012, Elad Alfassa <elad@fedoraproject.org>
 # Licensed under the Eiffel Forum License 2.
 
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 from sopel.tools import iteritems, stderr
 import sopel.tools
@@ -26,9 +26,9 @@ import sopel.loader
 import os
 import sys
 if sys.version_info.major < 3:
-    import ConfigParser
+    import configparser
 else:
-    basestring = str
+    str = str
     import configparser as ConfigParser
 import sopel.config.core_section
 from sopel.config.types import StaticSection
@@ -58,7 +58,7 @@ class Config(object):
         """
         self.filename = filename
         """The config object's associated file, as noted above."""
-        self.parser = ConfigParser.RawConfigParser(allow_no_value=True)
+        self.parser = configparser.RawConfigParser(allow_no_value=True)
         self.parser.read(self.filename)
         self.define_section('core', sopel.config.core_section.CoreSection,
                             validate=validate)
@@ -72,7 +72,7 @@ class Config(object):
         configured = None
         try:
             configured = self.parser.get('core', 'homedir')
-        except ConfigParser.NoOptionError:
+        except configparser.NoOptionError:
             pass
         if configured:
             return configured
@@ -93,7 +93,7 @@ class Config(object):
         """
         try:
             return self.parser.add_section(name)
-        except ConfigParser.DuplicateSectionError:
+        except configparser.DuplicateSectionError:
             return False
 
     def define_section(self, name, cls_, validate=True):
@@ -150,7 +150,7 @@ class Config(object):
             value = getattr(self, name)
             if not value:
                 return []
-            if isinstance(value, basestring):
+            if isinstance(value, str):
                 value = value.split(',')
                 # Keep the split value, so we don't have to keep doing this
                 setattr(self, name, value)

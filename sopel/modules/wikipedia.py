@@ -1,7 +1,7 @@
 # coding=utf-8
 # Copyright 2013 Elsie Powell - embolalia.com
 # Licensed under the Eiffel Forum License 2.
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 from sopel import web, tools
 from sopel.config.types import StaticSection, ValidatedAttribute
 from sopel.module import NOLIMIT, commands, example, rule
@@ -10,7 +10,7 @@ import re
 
 import sys
 if sys.version_info.major < 3:
-    from urlparse import unquote as _unquote
+    from urllib.parse import unquote as _unquote
     unquote = lambda s: _unquote(s.encode('utf-8')).decode('utf-8')
 else:
     from urllib.parse import unquote

@@ -2,7 +2,7 @@
 # Copyright 2008-9, Sean B. Palmer, inamidst.com
 # Copyright 2012, Elsie Powell, embolalia.com
 # Licensed under the Eiffel Forum License 2.
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 import re
 from sopel import web
@@ -11,7 +11,7 @@ import json
 import sys
 
 if sys.version_info.major < 3:
-    from urllib import quote_plus
+    from urllib.parse import quote_plus
 else:
     from urllib.parse import quote_plus
 

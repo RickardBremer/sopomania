@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat
 """
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 import textwrap
 import collections
@@ -50,8 +50,8 @@ def help(bot, trigger):
             trigger.nick
         )
 
-        name_length = max(6, max(len(k) for k in bot.command_groups.keys()))
-        for category, cmds in collections.OrderedDict(sorted(bot.command_groups.items())).items():
+        name_length = max(6, max(len(k) for k in list(bot.command_groups.keys())))
+        for category, cmds in list(collections.OrderedDict(sorted(bot.command_groups.items())).items()):
             category = category.upper().ljust(name_length)
             cmds = '  '.join(cmds)
             msg = bold(category) + '  ' + cmds

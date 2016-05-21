@@ -12,11 +12,11 @@ HTTP HEAD.
 # Copyright © 2012-2013, Elad Alfassa, <elad@fedoraproject.org>
 # Licensed under the Eiffel Forum License 2.
 
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 import re
 import sys
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import os.path
 import requests
 
@@ -24,17 +24,17 @@ from sopel import __version__
 from sopel.tools import deprecated
 
 if sys.version_info.major < 3:
-    import httplib
-    from htmlentitydefs import name2codepoint
-    from urlparse import urlparse
-    from urlparse import urlunparse
+    import http.client
+    from html.entities import name2codepoint
+    from urllib.parse import urlparse
+    from urllib.parse import urlunparse
 else:
     import http.client as httplib
     from html.entities import name2codepoint
     from urllib.parse import urlparse
     from urllib.parse import urlunparse
-    unichr = chr
-    unicode = str
+    chr = chr
+    str = str
 
 try:
     import ssl
@@ -52,7 +52,7 @@ default_headers = {'User-Agent': USER_AGENT}
 ca_certs = None  # Will be overriden when config loads. This is for an edge case.
 
 
-class MockHttpResponse(httplib.HTTPResponse):
+class MockHttpResponse(http.client.HTTPResponse):
     "Mock HTTPResponse with data that comes from requests."
     def __init__(self, response):
         self.headers = response.headers
@@ -151,11 +151,11 @@ r_entity = re.compile(r'&([^;\s]+);')
 def entity(match):
     value = match.group(1).lower()
     if value.startswith('#x'):
-        return unichr(int(value[2:], 16))
+        return chr(int(value[2:], 16))
     elif value.startswith('#'):
-        return unichr(int(value[1:]))
+        return chr(int(value[1:]))
     elif value in name2codepoint:
-        return unichr(name2codepoint[value])
+        return chr(name2codepoint[value])
     return '[' + value + ']'
 
 
@@ -189,9 +189,9 @@ def get_urllib_object(uri, timeout, headers=None, verify_ssl=True, data=None):
 def quote(string, safe='/'):
     """Like urllib2.quote but handles unicode properly."""
     if sys.version_info.major < 3:
-        if isinstance(string, unicode):
+        if isinstance(string, str):
             string = string.encode('utf8')
-        string = urllib.quote(string, safe.encode('utf8'))
+        string = urllib.parse.quote(string, safe.encode('utf8'))
     else:
         string = urllib.parse.quote(str(string), safe)
     return string
@@ -227,6 +227,6 @@ def iri_to_uri(iri):
 
 
 if sys.version_info.major < 3:
-    urlencode = urllib.urlencode
+    urlencode = urllib.parse.urlencode
 else:
     urlencode = urllib.parse.urlencode

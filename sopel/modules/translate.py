@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat
 """
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 from sopel import web
 from sopel.module import rule, commands, priority, example
 import json
@@ -16,12 +16,12 @@ import random
 import requests
 mangle_lines = {}
 if sys.version_info.major >= 3:
-    unicode = str
+    str = str
 
 
 def translate(text, in_lang='auto', out_lang='en'):
     raw = False
-    if unicode(out_lang).endswith('-raw'):
+    if str(out_lang).endswith('-raw'):
         out_lang = out_lang[:-4]
         raw = True
 
@@ -61,7 +61,7 @@ def translate(text, in_lang='auto', out_lang='en'):
     return ''.join(x[0] for x in data[0]), language
 
 
-@rule(u'$nickname[,:]\s+(?:([a-z]{2}) +)?(?:([a-z]{2}|en-raw) +)?["“](.+?)["”]\? *$')
+@rule('$nickname[,:]\s+(?:([a-z]{2}) +)?(?:([a-z]{2}|en-raw) +)?["“](.+?)["”]\? *$')
 @example('$nickname: "mon chien"? or $nickname: fr "mon chien"?')
 @priority('low')
 def tr(bot, trigger):

@@ -6,10 +6,11 @@
 # Copyright 2013, Lior Ramati <firerogue517@gmail.com>
 # Licensed under the Eiffel Forum License 2.
 
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 import sopel.test_tools
 import functools
+import collections
 
 NOLIMIT = 1
 """Return value for ``callable``\s, which supresses rate limiting for the call.
@@ -278,11 +279,11 @@ def require_privmsg(message=None):
             if trigger.is_privmsg:
                 return function(*args, **kwargs)
             else:
-                if message and not callable(message):
+                if message and not isinstance(message, collections.Callable):
                     bot.say(message)
         return _nop
     # Hack to allow decorator without parens
-    if callable(message):
+    if isinstance(message, collections.Callable):
         return actual_decorator(message)
     return actual_decorator
 
@@ -300,11 +301,11 @@ def require_chanmsg(message=None):
             if not trigger.is_privmsg:
                 return function(*args, **kwargs)
             else:
-                if message and not callable(message):
+                if message and not isinstance(message, collections.Callable):
                     bot.say(message)
         return _nop
     # Hack to allow decorator without parens
-    if callable(message):
+    if isinstance(message, collections.Callable):
         return actual_decorator(message)
     return actual_decorator
 
@@ -321,7 +322,7 @@ def require_privilege(level, message=None):
             channel_privs = bot.privileges[trigger.sender]
             allowed = channel_privs.get(trigger.nick, 0) >= level
             if not trigger.is_privmsg and not allowed:
-                if message and not callable(message):
+                if message and not isinstance(message, collections.Callable):
                     bot.say(message)
             else:
                 return function(bot, trigger, *args, **kwargs)
@@ -337,13 +338,13 @@ def require_admin(message=None):
         @functools.wraps(function)
         def guarded(bot, trigger, *args, **kwargs):
             if not trigger.admin:
-                if message and not callable(message):
+                if message and not isinstance(message, collections.Callable):
                     bot.say(message)
             else:
                 return function(bot, trigger, *args, **kwargs)
         return guarded
     # Hack to allow decorator without parens
-    if callable(message):
+    if isinstance(message, collections.Callable):
         return actual_decorator(message)
     return actual_decorator
 
@@ -356,13 +357,13 @@ def require_owner(message=None):
         @functools.wraps(function)
         def guarded(bot, trigger, *args, **kwargs):
             if not trigger.owner:
-                if message and not callable(message):
+                if message and not isinstance(message, collections.Callable):
                     bot.say(message)
             else:
                 return function(bot, trigger, *args, **kwargs)
         return guarded
     # Hack to allow decorator without parens
-    if callable(message):
+    if isinstance(message, collections.Callable):
         return actual_decorator(message)
     return actual_decorator
 

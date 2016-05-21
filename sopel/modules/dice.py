@@ -7,7 +7,7 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat/
 """
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 import random
 import re
 import operator
@@ -50,7 +50,7 @@ class DicePouch:
             n: the number of dice to drop.
         """
 
-        sorted_x = sorted(self.dice.items(), key=operator.itemgetter(0))
+        sorted_x = sorted(list(self.dice.items()), key=operator.itemgetter(0))
 
         for i, count in sorted_x:
             count = self.dice[i]
@@ -65,19 +65,19 @@ class DicePouch:
                 self.dropped[i] = count
                 n = n - count
 
-        for i, count in self.dropped.items():
+        for i, count in list(self.dropped.items()):
             if self.dice[i] == 0:
                 del self.dice[i]
 
     def get_simple_string(self):
         """Return the values of the dice like (2+2+2[+1+1])+1."""
-        dice = self.dice.items()
+        dice = list(self.dice.items())
         faces = ("+".join([str(face)] * times) for face, times in dice)
         dice_str = "+".join(faces)
 
         dropped_str = ""
         if self.dropped:
-            dropped = self.dropped.items()
+            dropped = list(self.dropped.items())
             dfaces = ("+".join([str(face)] * times) for face, times in dropped)
             dropped_str = "[+%s]" % ("+".join(dfaces),)
 
@@ -89,13 +89,13 @@ class DicePouch:
 
     def get_compressed_string(self):
         """Return the values of the dice like (3x2[+2x1])+1."""
-        dice = self.dice.items()
+        dice = list(self.dice.items())
         faces = ("%dx%d" % (times, face) for face, times in dice)
         dice_str = "+".join(faces)
 
         dropped_str = ""
         if self.dropped:
-            dropped = self.dropped.items()
+            dropped = list(self.dropped.items())
             dfaces = ("%dx%d" % (times, face) for face, times in dropped)
             dropped_str = "[+%s]" % ("+".join(dfaces),)
 
@@ -108,7 +108,7 @@ class DicePouch:
     def get_sum(self):
         """Get the sum of non-dropped dice and the addition."""
         result = self.addition
-        for face, times in self.dice.items():
+        for face, times in list(self.dice.items()):
             result += face * times
         return result
 

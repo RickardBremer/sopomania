@@ -6,7 +6,7 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat
 """
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 import re
 from sopel import web
@@ -15,9 +15,9 @@ from sopel.tools.calculation import eval_equation
 from socket import timeout
 import sys
 if sys.version_info.major < 3:
-    import HTMLParser
+    import html.parser
 else:
-    unichr = chr
+    chr = chr
     import html.parser as HTMLParser
 
 
@@ -81,14 +81,14 @@ def wa(bot, trigger):
         return bot.say('[WOLFRAM ERROR] Request timed out')
     if answer:
         answer = answer.decode('unicode_escape')
-        answer = HTMLParser.HTMLParser().unescape(answer)
+        answer = html.parser.HTMLParser().unescape(answer)
         # This might not work if there are more than one instance of escaped
         # unicode chars But so far I haven't seen any examples of such output
         # examples from Wolfram Alpha
         match = re.search('\\\:([0-9A-Fa-f]{4})', answer)
         if match is not None:
             char_code = match.group(1)
-            char = unichr(int(char_code, 16))
+            char = chr(int(char_code, 16))
             answer = answer.replace('\:' + char_code, char)
         waOutputArray = answer.split(";")
         if(len(waOutputArray) < 2):

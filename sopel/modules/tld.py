@@ -6,14 +6,14 @@ Licensed under the Eiffel Forum License 2.
 
 http://sopel.chat
 """
-from __future__ import unicode_literals, absolute_import, print_function, division
+
 
 from sopel import web
 from sopel.module import commands, example
 import re
 import sys
 if sys.version_info.major >= 3:
-    unicode = str
+    str = str
 
 uri = 'https://en.wikipedia.org/wiki/List_of_Internet_top-level_domains'
 r_tag = re.compile(r'<(?!!)[^>]+>')
@@ -50,7 +50,7 @@ def gettld(bot, trigger):
         bot.reply(reply)
     else:
         search = r'<td><a href="\S+" title="\S+">.{0}</a></td>\n<td><span class="flagicon"><img.*?\">(.*?)</a></td>\n<td[^>]*>(.*?)</td>\n<td[^>]*>(.*?)</td>\n<td[^>]*>(.*?)</td>\n<td[^>]*>(.*?)</td>\n<td[^>]*>(.*?)</td>\n'
-        search = search.format(unicode(tld))
+        search = search.format(str(tld))
         re_country = re.compile(search)
         matches = re_country.findall(page)
         if matches:
@@ -65,5 +65,5 @@ def gettld(bot, trigger):
                 dict_val["notes"] = dict_val["notes"][:400] + "..."
             reply = "%s (%s, %s). IDN: %s, DNSSEC: %s, SLD: %s" % (dict_val["country"], dict_val["expl"], dict_val["notes"], dict_val["idn"], dict_val["dnssec"], dict_val["sld"])
         else:
-            reply = "No matches found for TLD: {0}".format(unicode(tld))
+            reply = "No matches found for TLD: {0}".format(str(tld))
         bot.reply(reply)
