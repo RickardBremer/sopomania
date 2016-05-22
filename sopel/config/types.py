@@ -155,11 +155,11 @@ class BaseValidated(object):
             )
         return self.parse(value)
 
-    def __set__(self, instance, value):
-        if value is None:
+    def __set__(self, instance, tupl):
+        if tupl is None:
             instance._parser.remove_option(instance._section_name, self.name)
             return
-        value = self.serialize(value)
+        value = self.serialize(tupl)
         instance._parser.set(instance._section_name, self.name, value)
 
     def __delete__(self, instance):
@@ -197,7 +197,7 @@ class ValidatedAttribute(BaseValidated):
         self.default = default
 
     def serialize(self, value):
-        return str(value)
+        return value
 
     def parse(self, value):
         return value
